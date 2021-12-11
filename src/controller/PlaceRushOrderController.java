@@ -20,22 +20,21 @@ import entity.order.OrderMedia;
 
 public class PlaceRushOrderController extends BaseController{
 	
-	/**
-	 * Work to do: 	   
-	 * 		   placeRushOrder(cart: Cart, deliveryInfo: String, deliveryStruction: String, requireDate: date)
-	 */
 		
 	 /**
      * For logging purpose
      */
     private static Logger LOGGER = utils.Utils.getLogger(PlaceRushOrderController.class.getName());
-
+    
     /**
-     * This method checks the avalibility for Rush Order of the products in the Cart
+     * This method checks the avalibility for Rush Order of the available info and the products in the cart
+     * @param expectedDate : Ngay khach hang mong muon san pham duoc giao
+     * @param currDate : Ngay ma khach hang bat dau dat
+     * @param address : Dia chi ma khach hang chon
      * @throws SQLException
      */
-    public void placeRushOrder(Date expectedDate,Date currDate, String address) throws SQLException{
-        Cart.getCart().checkAvailabilityOfProduct(); //--> 'Cart' object is static*
+    public void placeRushOrder(Date expectedDate, Date currDate, String address) throws SQLException{
+        Cart.getCart().checkAvailabilityOfProduct(); 
         if(!validateDate(expectedDate, currDate)) {
         	throw new InvalidDeliveryInfoException("Chosen date is invalid");
         }
@@ -44,17 +43,6 @@ public class PlaceRushOrderController extends BaseController{
         }
     }
 
-    public void processRushDeliveryInfo(HashMap info) throws InterruptedException, IOException{
-        LOGGER.info("Process Rush Order Delivery Info");
-        LOGGER.info(info.toString());
-        validateRushDeliveryInfo(info);
-    }
-    
-    public void processRushOrderDate(Date expectedDate, Date currDate) throws InterruptedException, IOException {
-    	LOGGER.info("Process Rush Order Delivery date");
-    	LOGGER.info("expected: "+ expectedDate.toString() + ",current:" + currDate.toString());
-    	validateDate(expectedDate, currDate);
-    }
     
     public void validateRushDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
     	
@@ -66,7 +54,7 @@ public class PlaceRushOrderController extends BaseController{
      * @return
      */
     public boolean validateAddress(String address) {
-    	String[] pattArray = {"hanoi", "ha noi", "haf noi", "hn"};
+    	String[] pattArray = {"hanoi", "ha noi", "haf noi", "hn", "Ha Noi"};
     	Pattern pattern;
     	boolean result = false;
     	

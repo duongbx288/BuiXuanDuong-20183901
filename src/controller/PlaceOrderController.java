@@ -85,14 +85,21 @@ public class PlaceOrderController extends BaseController{
     
     public boolean validatePhoneNumber(String phoneNumber) {
     	// TODO: your work
-    	if(phoneNumber.length() != 10) return false;
-    	if(phoneNumber.indexOf('0') != 0) return false;
-    	try{
-    		Integer.parseInt(phoneNumber);
-    	} catch (NumberFormatException e) {
-    		return false;
-    	}
-    	
+    	if(phoneNumber.length() == 10) {
+    		if(phoneNumber.indexOf('0') != 0) return false;
+    		try{
+    			Integer.parseInt(phoneNumber);
+    		} catch (NumberFormatException e) {
+    			return false;
+    		}
+    	} else if(phoneNumber.length() == 11) {
+    		if(phoneNumber.indexOf('0') != 0 && phoneNumber.indexOf('1') != 1) return false;
+    		try{
+    			Integer.parseInt(phoneNumber);
+    		} catch (NumberFormatException e) {
+    			return false;
+    		}
+    	} else return false;
     	return true;
     }
     
