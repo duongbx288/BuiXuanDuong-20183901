@@ -75,7 +75,7 @@ public class PlaceOrderController extends BaseController{
     /**
    * The method validates the info
    * @param info
-   * @throws InterruptedException
+   * @throws InterruptedException	
    * @throws IOException
    */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
@@ -85,7 +85,7 @@ public class PlaceOrderController extends BaseController{
     public boolean validatePhoneNumber(String phoneNumber) {
     	// TODO: your work
     	if(phoneNumber.length() != 10) return false;
-    	
+    	if(phoneNumber.indexOf('0') != 0) return false;
     	try{
     		Integer.parseInt(phoneNumber);
     	} catch (NumberFormatException e) {

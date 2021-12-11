@@ -11,8 +11,17 @@ public class Order {
     private int shippingFees;
     private List lstOrderMedia;
     private HashMap<String, String> deliveryInfo;
+    private boolean orderType = false;
 
-    public Order(){
+    public boolean isOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(boolean orderType) {
+		this.orderType = orderType;
+	}
+
+	public Order(){
         this.lstOrderMedia = new ArrayList<>();
     }
 
