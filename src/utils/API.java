@@ -48,23 +48,14 @@ public class API {
 	 * @throws Exception
 	 */
 	public static String get(String url, String token) throws Exception {
-		LOGGER.info("Request URL: " + url + "\n");
-		URL line_api_url = new URL(url);
-		HttpURLConnection conn = (HttpURLConnection) line_api_url.openConnection();
-		conn.setDoInput(true);
-		conn.setDoOutput(true);
-		conn.setRequestMethod("GET");
-		conn.setRequestProperty("Content-Type", "application/json");
-		conn.setRequestProperty("Authorization", "Bearer " + token);
-		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		String inputLine;
-		StringBuilder respone = new StringBuilder(); // ising StringBuilder for the sake of memory and performance
-		while ((inputLine = in.readLine()) != null)
-			System.out.println(inputLine);
-		respone.append(inputLine + "\n");
-		in.close();
-		LOGGER.info("Respone Info: " + respone.substring(0, respone.length() - 1).toString());
-		return respone.substring(0, respone.length() - 1).toString();
+		
+		//phan 1: setup
+		HttpURLConnection conn = setupConnection(url, "GET", token);
+		
+		// phan 2: doc du lieu tra ve tu server
+		String respone = readRespone(conn);
+		
+		return respone;
 	}
 
 	int var;
@@ -77,39 +68,75 @@ public class API {
 	 * @throws IOException
 	 */
 	public static String post(String url, String data
-//			, String token
+		, String token
 	) throws IOException {
+		//cho phep PATCH protocol
 		allowMethods("PATCH");
+		
+		// phan 1: setup
+		HttpURLConnection conn = setupConnection(url, "GET", token);
+		
+		// phan 2: gui du lieu
+		Writer writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+		writer.write(data);
+		writer.close();
+		
+		// phan 3: doc du lieu gui ve tu server
+		String respone = readRespone(conn);
+		
+		return respone;
+	}
+
+	/**
+	 * Thiet lap connection toi server
+	 * @param url: duong dan toi server can request
+	 * @param method: giao thuc api
+	 * @param token: doan ma bam can cung cap de xac thuc nguoi dung
+	 * @return connection
+	 * @throws IOException
+	 */
+	private static HttpURLConnection setupConnection(String url, String method, String token) throws IOException {
+		LOGGER.info("Request URL: " + url + "\n");
 		URL line_api_url = new URL(url);
-		String payload = data;
-		LOGGER.info("Request Info:\nRequest URL: " + url + "\n" + "Payload Data: " + payload + "\n");
 		HttpURLConnection conn = (HttpURLConnection) line_api_url.openConnection();
 		conn.setDoInput(true);
 		conn.setDoOutput(true);
-		conn.setRequestMethod("PATCH");
+		conn.setRequestMethod(method);
 		conn.setRequestProperty("Content-Type", "application/json");
-//		conn.setRequestProperty("Authorization", "Bearer " + token);
-		Writer writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-		writer.write(payload);
-		writer.close();
+		conn.setRequestProperty("Authorization", "Bearer " + token);
+		return conn;
+	}
+	
+	/**
+	 * Phuong thuc doc du lieu tra ve tu server
+	 * @param conn: connection to server
+	 * @return respone: phan hoi tra ve tu server
+	 * @throws IOException
+	 */
+	private static String readRespone(HttpURLConnection conn) throws IOException {
 		BufferedReader in;
 		String inputLine;
-		if (conn.getResponseCode() / 100 == 2) {
+		if(conn.getResponseCode() / 100 == 2) {
 			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		} else {
 			in = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
 		}
-		StringBuilder response = new StringBuilder();
+		StringBuilder respone = new StringBuilder(); // su dung String Builder cho viec toi uu ve mat bo nho
 		while ((inputLine = in.readLine()) != null)
-			response.append(inputLine);
+			System.out.println(inputLine);
+		respone.append(inputLine + "\n");
 		in.close();
-		LOGGER.info("Respone Info: " + response.toString());
-		return response.toString();
+		LOGGER.info("Respone Info: " + respone.substring(0, respone.length() - 1).toString());
+		return respone.substring(0, respone.length() - 1).toString();
 	}
-
+	
+	
+	
 	/**
-	 * Phương thức cho phép gọi các loại giao thức PI khác nhau như PATCH, PUT, 
-	 * @param methods
+	 * Phương thức cho phép gọi các loại giao thức PI khác nhau như PATCH, PUT,.. (chi hoat dong voi Java11)
+	 * @deprecated chi hoat dong voi Java <= 11
+	 * @param methods: giao thuc can cho cho phep(PATCH, PUT..)
+	 * 
 	 */
 	private static void allowMethods(String... methods) {
 		try {

@@ -34,9 +34,9 @@ public class PlaceRushOrderController extends BaseController{
      * This method checks the avalibility for Rush Order of the products in the Cart
      * @throws SQLException
      */
-    public void placeRushOrder(Date requiredDate, String address) throws SQLException{
+    public void placeRushOrder(Date expectedDate,Date currDate, String address) throws SQLException{
         Cart.getCart().checkAvailabilityOfProduct(); //--> 'Cart' object is static*
-        if(!validateDate(requiredDate)) {
+        if(!validateDate(expectedDate, currDate)) {
         	throw new InvalidDeliveryInfoException("Chosen date is invalid");
         }
         if(!validateAddress(address)) {
@@ -50,6 +50,11 @@ public class PlaceRushOrderController extends BaseController{
         validateRushDeliveryInfo(info);
     }
     
+    public void processRushOrderDate(Date expectedDate, Date currDate) throws InterruptedException, IOException {
+    	LOGGER.info("Process Rush Order Delivery date");
+    	LOGGER.info("expected: "+ expectedDate.toString() + ",current:" + currDate.toString());
+    	validateDate(expectedDate, currDate);
+    }
     
     public void validateRushDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
     	
@@ -76,9 +81,9 @@ public class PlaceRushOrderController extends BaseController{
     	return result;
     }
     
-    public boolean validateDate(Date date) {
+    public boolean validateDate(Date expectedDate, Date date) {
     	Date currDate = Calendar.getInstance().getTime();
-    	if (date.after(currDate)) return true;	
+    	if (expectedDate.after(date)) return true;	
     	return false;
     }
 

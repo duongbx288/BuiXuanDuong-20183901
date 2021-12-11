@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import common.exception.InvalidDeliveryInfoException;
 import controller.PlaceOrderController;
 import entity.invoice.Invoice;
 import entity.order.Order;
@@ -72,6 +73,9 @@ public class RushOrderScreenHandler extends BaseScreenHandler {
 			InvoiceScreenHandler.setScreenTitle("Invoice Screen");
 			InvoiceScreenHandler.setBController(getBController());
 			InvoiceScreenHandler.show();
+		}
+		else {
+			throw new InvalidDeliveryInfoException("Delivery date has not been chosen yet");
 		}
 	}
 	//confirmRushOrder
