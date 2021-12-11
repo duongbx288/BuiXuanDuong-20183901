@@ -79,7 +79,8 @@ public class PlaceOrderController extends BaseController{
    * @throws IOException
    */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
-    	
+    	if(validatePhoneNumber(info.get("phone")) && validateName(info.get("name"))){} 
+    	else throw new InvalidDeliveryInfoException("Some info is invalid");
     }
     
     public boolean validatePhoneNumber(String phoneNumber) {
@@ -98,7 +99,7 @@ public class PlaceOrderController extends BaseController{
     public boolean validateName(String name) {
     	// TODO: your work
     	
-    	return false;
+    	return true;
     }
     
     public boolean validateAddress(String address) {

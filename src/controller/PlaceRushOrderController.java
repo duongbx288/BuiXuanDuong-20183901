@@ -21,19 +21,12 @@ import entity.order.OrderMedia;
 public class PlaceRushOrderController extends BaseController{
 	
 	/**
-	 * Work to do: 
-	 * 			   checkRushOrderAvailability(cart :Cart?)
-	 * 			   checkRushOrderAddress(address: String)
-	 * 			   placeRushOrder(cart: Cart, deliveryInfo: String, deliveryStruction: String, requireDate: date)
+	 * Work to do: 	   
+	 * 		   placeRushOrder(cart: Cart, deliveryInfo: String, deliveryStruction: String, requireDate: date)
 	 */
-	
-	/**
-	 * add name, phone, city, address to delivery info in Rush Order delivery form
-	 */
-	
-	
-	   /**
-     * Just for logging purpose
+		
+	 /**
+     * For logging purpose
      */
     private static Logger LOGGER = utils.Utils.getLogger(PlaceRushOrderController.class.getName());
 
@@ -51,71 +44,16 @@ public class PlaceRushOrderController extends BaseController{
         }
     }
 
-    /**
-     * This method creates the new Rush Order based on the Cart
-     * @return Rush Order
-     * @throws SQLException
-     */
-    public Order createRushOrder() throws SQLException{
-        Order order = new Order();
-        for (Object object : Cart.getCart().getListMedia()) {
-            CartMedia cartMedia = (CartMedia) object;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), 
-                                                   cartMedia.getQuantity(), 
-                                                   cartMedia.getPrice());    
-            order.getlstOrderMedia().add(orderMedia);
-        }
-        return order;
-    }
-
-    /**
-     * This method creates the new Invoice based on order
-     * @param order
-     * @return Invoice
-     */
-    public Invoice createInvoice(Order order) {
-        return new Invoice(order);
-    }
-
-    /**
-     * This method takes responsibility for processing the shipping info from user
-     * @param info
-     * @throws InterruptedException
-     * @throws IOException
-     */
-    public void processDeliveryInfo(HashMap info) throws InterruptedException, IOException{
-        LOGGER.info("Process Delivery Info");
+    public void processRushDeliveryInfo(HashMap info) throws InterruptedException, IOException{
+        LOGGER.info("Process Rush Order Delivery Info");
         LOGGER.info(info.toString());
-        validateDeliveryInfo(info);
+        validateRushDeliveryInfo(info);
     }
     
-    /**
-   * The method validates the info
-   * @param info
-   * @throws InterruptedException
-   * @throws IOException
-   */
-    public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
+    
+    public void validateRushDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
     	
     }
-    
-    public boolean validatePhoneNumber(String phoneNumber) {
-    	if(phoneNumber.length() != 10) return false;
-    	if(phoneNumber.indexOf('0') != 0) return false;
-    	
-    	try{
-    		Integer.parseInt(phoneNumber);
-    	} catch (NumberFormatException e) {
-    		return false;
-    	}
-    	
-    	return true;
-    }
-    
-    public boolean validateName(String name) {
-    	return false;
-    }
-    
     
     /**
      * Kiem tra dia chi khach hang nhap vao co ho tro giao hang nhanh hay ko

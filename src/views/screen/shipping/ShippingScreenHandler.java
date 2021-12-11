@@ -14,6 +14,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,6 +24,7 @@ import utils.Configs;
 import views.screen.BaseScreenHandler;
 import views.screen.invoice.InvoiceScreenHandler;
 import views.screen.popup.PopupScreen;
+import views.screen.rushorder.RushOrderScreenHandler;
 
 public class ShippingScreenHandler extends BaseScreenHandler implements Initializable {
 
@@ -43,6 +45,9 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 
 	@FXML
 	private ComboBox<String> province;
+	
+	@FXML
+	private CheckBox requestRush;
 
 	private Order order;
 
@@ -79,20 +84,37 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 		} catch (InvalidDeliveryInfoException e) {
 			throw new InvalidDeliveryInfoException(e.getMessage());
 		}
-	
-		// calculate shipping fees
-		int shippingFees = getBController().calculateShippingFee(order);
-		order.setShippingFees(shippingFees);
-		order.setDeliveryInfo(messages);
 		
-		// create invoice screen
-		Invoice invoice = getBController().createInvoice(order);
-		BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
-		InvoiceScreenHandler.setPreviousScreen(this);
-		InvoiceScreenHandler.setHomeScreenHandler(homeScreenHandler);
-		InvoiceScreenHandler.setScreenTitle("Invoice Screen");
-		InvoiceScreenHandler.setBController(getBController());
-		InvoiceScreenHandler.show();
+		if(requestRush.isSelected()) {
+			int shippingFees = getBController().calculateShippingFee(order);
+			order.setShippingFees(shippingFees);
+			order.setDeliveryInfo(messages);
+			order.setOrderType(true);
+			if(order.getOrderType()) System.out.println("Rush order");
+			
+			BaseScreenHandler RushOrderScreenHandler = new RushOrderScreenHandler(this.stage, Configs.RUSH_ORDER_PATH, order);
+			RushOrderScreenHandler.setPreviousScreen(this);
+			RushOrderScreenHandler.setHomeScreenHandler(homeScreenHandler);
+			RushOrderScreenHandler.setBController(getBController());
+			RushOrderScreenHandler.show();
+		}
+		else {
+			// calculate shipping fees
+			int shippingFees = getBController().calculateShippingFee(order);
+			order.setShippingFees(shippingFees);
+			order.setDeliveryInfo(messages);
+			order.setOrderType(false);
+			if(order.getOrderType()) System.out.println("Normal Order");
+		
+			// create invoice screen
+			Invoice invoice = getBController().createInvoice(order);
+			BaseScreenHandler InvoiceScreenHandler = new InvoiceScreenHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
+			InvoiceScreenHandler.setPreviousScreen(this);
+			InvoiceScreenHandler.setHomeScreenHandler(homeScreenHandler);
+			InvoiceScreenHandler.setScreenTitle("Invoice Screen");
+			InvoiceScreenHandler.setBController(getBController());
+			InvoiceScreenHandler.show();
+		}
 	}
 
 	public PlaceOrderController getBController(){

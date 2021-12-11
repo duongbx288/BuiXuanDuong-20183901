@@ -11,9 +11,9 @@ public class Order {
     private int shippingFees;
     private List lstOrderMedia;
     private HashMap<String, String> deliveryInfo;
-    private boolean orderType = false;
+    private boolean orderType;
 
-    public boolean isOrderType() {
+    public boolean getOrderType() {
 		return orderType;
 	}
 
