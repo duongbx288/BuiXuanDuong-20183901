@@ -81,7 +81,13 @@ public class PlaceOrderController extends BaseController{
    * @throws IOException
    */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
-    	if(validatePhoneNumber(info.get("phone")) && validateName(info.get("name"))){} 
+    	if(validatePhoneNumber(info.get("phone")) && validateName(info.get("name"))
+    	&& validateAddress(info.get("address"))){
+    		
+    		LOGGER.info("Validate delivery info:");
+    		LOGGER.info("phone: "+ info.get("phone") + ", name:" + info.get("name") + 
+    				    ",address: " + info.get("address"));
+    	} 
     	else throw new InvalidDeliveryInfoException("Some info is invalid");
     }
     
@@ -128,7 +134,7 @@ public class PlaceOrderController extends BaseController{
     	Pattern pattern;
     	boolean result = true;
     	
-    	if(name != null) {
+    	if(name != null && !name.isBlank()) {
     		
     		for(int i = 0; i < pattArray.length; i++) {
     			pattern = Pattern.compile(pattArray[i]);
@@ -151,7 +157,17 @@ public class PlaceOrderController extends BaseController{
      * @return false: thong tin dia chi khong hop le
      */
     public boolean validateAddress(String address) {
-    	// TODO: your work
+    	String barrier = "^[a-zA-Z_0-9_\\,\\.\\/\\_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢ"
+    			+ "ẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$";
+    	Pattern pattern;
+    	
+    	if(address != null) {
+    	
+    		pattern = Pattern.compile(barrier);
+				if(pattern.matcher(address).matches()) {
+					return true;  	
+				} else return false;
+    	}
     	return false;
     }
     

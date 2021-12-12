@@ -29,7 +29,8 @@ class ValidateNameTest {
 		"()asdasd123, false",
 		"eurus 123, false",
 		"michele #$, false",
-		" , false"
+		"'       ', false",
+		",false"
 	})
 
 	

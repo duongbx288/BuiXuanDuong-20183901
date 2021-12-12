@@ -17,11 +17,14 @@ class ValidatePhoneNumberTest {
 
 	@ParameterizedTest
 	@CsvSource({
-		"1123456789,false",
-		"01234,false",
-		"abc,false",
-		"09238586222,false",
-		"0911234567,true"
+		"0911234567, true",
+		"01242357345, true",
+		"1123456789, false",
+		"01234, false",
+		"abc, false",
+		"09238586222, false",
+		", false",
+		"'          ', false"
 	})
 	 
 	/*@Test*/

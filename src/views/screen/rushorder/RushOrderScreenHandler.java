@@ -73,10 +73,10 @@ public class RushOrderScreenHandler extends BaseScreenHandler {
 	    	Instant instant = Instant.from(myDate.atStartOfDay(ZoneId.systemDefault()));
 	    	Date expectedDate = Date.from(instant);
 	    	orderInfo = order.getDeliveryInfo();
-			String address = orderInfo.get("address");
-			System.out.println(address);
+
 			try {
 				// process and validate delivery info
+				String address = orderInfo.get("address");
 				pController.placeRushOrder(expectedDate, currDate, address);
 			} catch (InvalidDeliveryInfoException e) {
 				throw new InvalidDeliveryInfoException(e.getMessage());

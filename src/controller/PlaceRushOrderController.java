@@ -43,7 +43,7 @@ public class PlaceRushOrderController extends BaseController{
     }
     
     /**
-     * Kiem tra dia chi khach hang nhap vao co ho tro giao hang nhanh hay ko
+     * Kiem tra dia chi khach hang nhap vao co hop le hay khong
      * @param address: dia chi khach hang nhap vao
      * @return boolean
      */
@@ -52,19 +52,10 @@ public class PlaceRushOrderController extends BaseController{
     			+ "ẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$";
     	Pattern pattern;
     	
-    	if(address != null) {
+    	if(address != null && !address.isBlank()) {
     	
     		pattern = Pattern.compile(barrier);
 				if(pattern.matcher(address).matches()) {
-					String[] pattArray = {"(?s).*\\hanoi\\b.*\\HaNoi\\b.*\\Ha noi\\b.*"};
-					boolean result = false;
-					/**
-	    				for(int i = 0; i < pattArray.length; i++) {
-	    				pattern = Pattern.compile(pattArray[i], Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-	    				result = pattern.matcher(address).matches();
-	    				if(result) {
-	    				break;
-	    			}*/
 					return true;  	
 				} else return false;
     	}
@@ -85,14 +76,13 @@ public class PlaceRushOrderController extends BaseController{
 
     /**
      * This method calculates the shipping fees of the rush order
-     * @param order: don hang
+     * @param order: don hangs
      * @param initFee: chi phi hang hoa ban dau
      * @param distance: khoang cach giao hang
      * @return fees: gia tien cua don hang dat nhanh
      */
     public int calculateShippingFee(Order order, int initFee, int distance){
-        Random rand = new Random();
-        int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
+        int fees = (int)( ( (distance*10)/100 ) * initFee );
         LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);
         return fees;
     }

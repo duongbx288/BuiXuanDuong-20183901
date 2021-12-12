@@ -20,10 +20,12 @@ class ValidateAddressTest {
 		"Hanoi, true",
 		"'123, Hanoi', true",
 		"'123, 412 to 2, phuong truong thi', true",
+		"'12/240 to 2, phuong hai ba trung', true",
 		"&*(()*()#, false",
 		"'#%## ba dinh, dong da', false",
-		"'12/240 to 2, phuong hai ba trung', true",
-		"'12\1, 45@ ha noi', false"
+		"'12\1, 45@ ha noi', false",
+		", false",
+		"'  ',false"
 	})
 	
 	//@Test
