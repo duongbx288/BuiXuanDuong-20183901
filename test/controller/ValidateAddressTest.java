@@ -9,10 +9,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class ValidateAddressTest {
 
-	private PlaceRushOrderController placeRushOrderController;
+	private PlaceOrderController placeOrderController;
 	@BeforeEach
 	void setUp() throws Exception {
-		placeRushOrderController = new PlaceRushOrderController();
+		placeOrderController = new PlaceOrderController();
 	}
 
 	@ParameterizedTest
@@ -30,8 +30,7 @@ class ValidateAddressTest {
 	
 	//@Test
 	void test(String address, boolean expect) {
-		boolean isValid = placeRushOrderController.validateAddress(address);
-		System.out.println(isValid);
+		boolean isValid = placeOrderController.validateAddress(address);
 		assertEquals(isValid, expect);
 	}
 

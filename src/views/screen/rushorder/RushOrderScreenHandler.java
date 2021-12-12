@@ -47,13 +47,27 @@ public class RushOrderScreenHandler extends BaseScreenHandler {
 	private HashMap<String, String> orderInfo;
 	PlaceRushOrderController pController = new PlaceRushOrderController();
 	
+	/** Khởi tạo màn hình Rush Order Screen
+	 * @param stage
+	 * @param screenPath
+	 * @param order
+	 * @throws IOException
+	 */
 	public RushOrderScreenHandler(Stage stage, String screenPath, Order order) throws IOException {
 		super(stage, screenPath);
 		this.order = order;
 
 	}
 	
+	//initializable
 	
+	/**
+	 * Đưa màn hình về màn hình trước đó khi bấm vào nút 'Back'
+	 * @param event
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws SQLException
+	 */
 	@FXML
 	void toPreviousScreen(MouseEvent event) throws IOException, InterruptedException, SQLException{
 		ShippingScreenHandler ShippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, order);
@@ -64,7 +78,13 @@ public class RushOrderScreenHandler extends BaseScreenHandler {
 		ShippingScreenHandler.show();
 	}
 	
-	
+	/**
+	 * Đưa màn hình tới màn hình hóa đơn thanh toán sau khi kiểm tra các thông tin khách hàng nhập đã hợp lệ hay chưa
+	 * @param event
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws SQLException
+	 */
 	@FXML
 	void confirmRushOrder(MouseEvent event) throws IOException, InterruptedException, SQLException{
 		if(date.getValue() != null) {
@@ -76,8 +96,8 @@ public class RushOrderScreenHandler extends BaseScreenHandler {
 
 			try {
 				// process and validate delivery info
-				String address = orderInfo.get("address");
-				pController.placeRushOrder(expectedDate, currDate, address);
+				String province = orderInfo.get("province");
+				pController.placeRushOrder(expectedDate, currDate, province);
 			} catch (InvalidDeliveryInfoException e) {
 				throw new InvalidDeliveryInfoException(e.getMessage());
 			}

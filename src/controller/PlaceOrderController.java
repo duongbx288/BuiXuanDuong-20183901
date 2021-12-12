@@ -118,7 +118,6 @@ public class PlaceOrderController extends BaseController{
     		} else return false;
     		
     	} else return false;
-    	
     	return true;
     }
     
@@ -153,15 +152,15 @@ public class PlaceOrderController extends BaseController{
     /**
      * The method checks whether the address customers provided is valid or not
      * @param address: dia chi ma khach hang nhap
-     * @return true: thong tin dia chi hop le
-     * @return false: thong tin dia chi khong hop le
+     * @return boolean
      */
     public boolean validateAddress(String address) {
     	String barrier = "^[a-zA-Z_0-9_\\,\\.\\/\\_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢ"
-    			+ "ẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$";
+    			+ "ẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈ"
+    			+ "ỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$";
     	Pattern pattern;
     	
-    	if(address != null) {
+    	if(address != null && !address.isBlank()) {
     	
     		pattern = Pattern.compile(barrier);
 				if(pattern.matcher(address).matches()) {

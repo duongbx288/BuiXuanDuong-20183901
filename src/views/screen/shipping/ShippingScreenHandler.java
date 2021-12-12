@@ -89,7 +89,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 			if(province.getValue() != "Hà Nội") {
 				throw new InvalidDeliveryInfoException("Province does not support Rush Order");
 			} else {
-				System.out.println(province.getValue());
+
 			int shippingFees = getBController().calculateShippingFee(order);
 			order.setShippingFees(shippingFees);
 			order.setDeliveryInfo(messages);
@@ -110,7 +110,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 			order.setShippingFees(shippingFees);
 			order.setDeliveryInfo(messages);
 			order.setOrderType(false);
-			if(order.getOrderType()) System.out.println("Normal Order");
+			if(!order.getOrderType()) System.out.println("Normal Order");
 		
 			// create invoice screen
 			Invoice invoice = getBController().createInvoice(order);

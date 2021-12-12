@@ -23,8 +23,10 @@ class ValidatePhoneNumberTest {
 		"01234, false",
 		"abc, false",
 		"09238586222, false",
+		"09123 71234, false",
 		", false",
-		"'          ', false"
+		"'          ', false",
+
 	})
 	 
 	/*@Test*/

@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class ValidateNameTest {
-
 	private PlaceOrderController placeOrderController;
 	@BeforeEach
 	void setUp() throws Exception {
@@ -21,7 +20,7 @@ class ValidateNameTest {
 		"Xuan Duong, true",
 		"Xuân Dương, true",
 		"Nguyen van a, true",
-		"nguyen van33 a, false",
+		"nguyen 33 a, false",
 		"$#12fa, false",
 		"132 @#, false",
 		"àd124124fad, false",
@@ -33,7 +32,6 @@ class ValidateNameTest {
 		",false"
 	})
 
-	
 	void test(String name, boolean expect) {
 		boolean isValid = placeOrderController.validateName(name);
 		assertEquals(isValid, expect);

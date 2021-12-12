@@ -29,39 +29,22 @@ public class PlaceRushOrderController extends BaseController{
      * This method checks the avalibility for Rush Order of the available info and the products in the cart
      * @param expectedDate : Ngay khach hang mong muon san pham duoc giao
      * @param currDate : Ngay ma khach hang bat dau dat
-     * @param address : Dia chi ma khach hang chon
+     * @param province : Tinh thanh khach hang muon dat hang nhanh
      * @throws SQLException
      */
-    public void placeRushOrder(Date expectedDate, Date currDate, String address) throws SQLException{
+    public void placeRushOrder(Date expectedDate, Date currDate, String province) throws SQLException{
+		LOGGER.info("Processing Rush order info:");
+		LOGGER.info("Expected Date: "+ expectedDate + ", setDate:" + currDate + 
+				    ",province: " + province);
+		
         Cart.getCart().checkAvailabilityOfProduct(); 
         if(!validateDate(expectedDate, currDate)) {
         	throw new InvalidDeliveryInfoException("Chosen date is invalid");
         }
-        if(!validateAddress(address)) {
-        	throw new InvalidDeliveryInfoException("Address does not support Rush Order");
+        if(!validateProvince(province)) {
+        	throw new InvalidDeliveryInfoException("Chosen province does not support Rush Order");
         }
     }
-    
-    /**
-     * Kiem tra dia chi khach hang nhap vao co hop le hay khong
-     * @param address: dia chi khach hang nhap vao
-     * @return boolean
-     */
-    public boolean validateAddress(String address) {
-    	String barrier = "^[a-zA-Z_0-9_\\,\\.\\/\\_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢ"
-    			+ "ẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$";
-    	Pattern pattern;
-    	
-    	if(address != null && !address.isBlank()) {
-    	
-    		pattern = Pattern.compile(barrier);
-				if(pattern.matcher(address).matches()) {
-					return true;  	
-				} else return false;
-    	}
-    	return false;
-    }
-    
     
     /**
      * Kiem tra thoi gian yeu cau giao hang cua khach hang co hop le hay ko
@@ -70,10 +53,39 @@ public class PlaceRushOrderController extends BaseController{
      * @return boolean
      */
     public boolean validateDate(Date expectedDate, Date currDate) { 
+    	if (expectedDate != null && currDate != null) {
     	if (expectedDate.after(currDate)) return true;	
+    	}
     	return false;
     }
 
+    /**
+     * Kiem tra tinh thanh co ho tro dat hang nhanh hay khong
+     * @param province: tinh thanh khach hang chon
+     * @return boolean
+     */
+    public boolean validateProvince(String province) {
+       	String[] pattArray = {"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠ"
+    			+ "ẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏố"
+    			+ "ồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$",
+    			"Hà Nội"};
+    	Pattern pattern;
+    	boolean result = true;
+    	
+    	if(province != null && !province.isBlank()) {
+    		
+    		for(int i = 0; i < pattArray.length; i++) {
+    			pattern = Pattern.compile(pattArray[i]);
+    			result = pattern.matcher(province).matches();
+    			if(!result) {
+    				break;
+    			}
+    		}
+    		
+    	} else result = false;
+    	return result;
+    }
+    
     /**
      * This method calculates the shipping fees of the rush order
      * @param order: don hangs
