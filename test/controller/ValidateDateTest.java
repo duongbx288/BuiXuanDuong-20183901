@@ -19,10 +19,13 @@ class ValidateDateTest {
 
 	@ParameterizedTest
 	@CsvSource({
-		"12/12/2021, 11/11/1111, true",
-		"12/12/2021, 12/12/3020, false",
-		"12/11/2021, 4/11/2021, true",
-		"12/11/2021, 12/4/2021, true"
+		"11/11/2022, 11/11/2021, true",
+		"11/12/2021, 11/11/2021, true",
+		"12/11/2021, 11/11/2021, true",
+		"11/11/2021, 11/11/2021, false",
+		"11/11/2020, 11/11/2021, false",
+		"11/10/2021, 11/11/2021, false",
+		"10/11/2021, 11/11/2021, false"
 	})
 	
 	void test(Date expectedDate, Date currDate , boolean expect) {

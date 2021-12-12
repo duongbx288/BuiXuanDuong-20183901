@@ -53,14 +53,6 @@ public class RushOrderScreenHandler extends BaseScreenHandler {
 
 	}
 	
-	//@Override
-    //public void initialize(URL location, ResourceBundle resources) {
-	//	orderInfo = order.getDeliveryInfo();
-	//	for(String key: orderInfo.keySet()) {
-	//		info.setText(key + ":" + orderInfo.get(key)+".");
-	//	}
-	//}
-	
 	
 	@FXML
 	void toPreviousScreen(MouseEvent event) throws IOException, InterruptedException, SQLException{

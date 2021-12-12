@@ -19,8 +19,7 @@ import entity.order.Order;
 import entity.order.OrderMedia;
 
 public class PlaceRushOrderController extends BaseController{
-	
-		
+			
 	 /**
      * For logging purpose
      */
@@ -42,45 +41,56 @@ public class PlaceRushOrderController extends BaseController{
         	throw new InvalidDeliveryInfoException("Address does not support Rush Order");
         }
     }
-
-    
-    public void validateRushDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
-    	
-    }
     
     /**
      * Kiem tra dia chi khach hang nhap vao co ho tro giao hang nhanh hay ko
-     * @param address
-     * @return
+     * @param address: dia chi khach hang nhap vao
+     * @return boolean
      */
     public boolean validateAddress(String address) {
-    	String[] pattArray = {"hanoi", "ha noi", "haf noi", "hn", "Ha Noi"};
+    	String barrier = "^[a-zA-Z_0-9_\\,\\.\\/\\_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢ"
+    			+ "ẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$";
     	Pattern pattern;
-    	boolean result = false;
     	
-    	for(int i = 0; i < pattArray.length; i++) {
-    		pattern = Pattern.compile(pattArray[i], Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-    		result = pattern.matcher(address).matches();
-    		if(result) {
-    			break;
-    		}
+    	if(address != null) {
+    	
+    		pattern = Pattern.compile(barrier);
+				if(pattern.matcher(address).matches()) {
+					String[] pattArray = {"(?s).*\\hanoi\\b.*\\HaNoi\\b.*\\Ha noi\\b.*"};
+					boolean result = false;
+					/**
+	    				for(int i = 0; i < pattArray.length; i++) {
+	    				pattern = Pattern.compile(pattArray[i], Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+	    				result = pattern.matcher(address).matches();
+	    				if(result) {
+	    				break;
+	    			}*/
+					return true;  	
+				} else return false;
     	}
-    	
-    	return result;
+    	return false;
     }
     
-    public boolean validateDate(Date expectedDate, Date date) {
-    	Date currDate = Calendar.getInstance().getTime();
-    	if (expectedDate.after(date)) return true;	
+    
+    /**
+     * Kiem tra thoi gian yeu cau giao hang cua khach hang co hop le hay ko
+     * @param expectedDate: thoi gian khach hang chon de giao hang
+     * @param currDate: thoi gian ma khach hang dat 
+     * @return boolean
+     */
+    public boolean validateDate(Date expectedDate, Date currDate) { 
+    	if (expectedDate.after(currDate)) return true;	
     	return false;
     }
 
     /**
-     * This method calculates the shipping fees of order
-     * @param order
-     * @return shippingFee
+     * This method calculates the shipping fees of the rush order
+     * @param order: don hang
+     * @param initFee: chi phi hang hoa ban dau
+     * @param distance: khoang cach giao hang
+     * @return fees: gia tien cua don hang dat nhanh
      */
-    public int calculateShippingFee(Order order){
+    public int calculateShippingFee(Order order, int initFee, int distance){
         Random rand = new Random();
         int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
         LOGGER.info("Order Amount: " + order.getAmount() + " -- Shipping Fees: " + fees);

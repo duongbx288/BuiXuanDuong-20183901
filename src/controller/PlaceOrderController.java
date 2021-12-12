@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import entity.cart.Cart;
 import entity.cart.CartMedia;
@@ -36,7 +38,7 @@ public class PlaceOrderController extends BaseController{
 
     /**
      * This method creates the new Order based on the Cart
-     * @return Order
+     * @return Order: order duoc tao tu thong tin gio hang
      * @throws SQLException
      */
     public Order createOrder() throws SQLException{
@@ -53,8 +55,8 @@ public class PlaceOrderController extends BaseController{
 
     /**
      * This method creates the new Invoice based on order
-     * @param order
-     * @return Invoice
+     * @param order: order cua khach hang
+     * @return Invoice: hoa don duoc tao tu order cua khach hang
      */
     public Invoice createInvoice(Order order) {
         return new Invoice(order);
@@ -62,7 +64,7 @@ public class PlaceOrderController extends BaseController{
 
     /**
      * This method takes responsibility for processing the shipping info from user
-     * @param info
+     * @param info: thong tin ma nguoi dung dua vao
      * @throws InterruptedException
      * @throws IOException
      */
@@ -73,8 +75,8 @@ public class PlaceOrderController extends BaseController{
     }
     
     /**
-   * The method validates the info
-   * @param info
+   * The method validates the info 
+   * @param info: info provided by customers
    * @throws InterruptedException	
    * @throws IOException
    */
@@ -83,32 +85,71 @@ public class PlaceOrderController extends BaseController{
     	else throw new InvalidDeliveryInfoException("Some info is invalid");
     }
     
-    public boolean validatePhoneNumber(String phoneNumber) {
-    	// TODO: your work
-    	if(phoneNumber.length() == 10) {
-    		if(phoneNumber.indexOf('0') != 0) return false;
-    		try{
-    			Integer.parseInt(phoneNumber);
-    		} catch (NumberFormatException e) {
-    			return false;
-    		}
-    	} else if(phoneNumber.length() == 11) {
-    		if(phoneNumber.indexOf('0') != 0 && phoneNumber.indexOf('1') != 1) return false;
-    		try{
-    			Integer.parseInt(phoneNumber);
-    		} catch (NumberFormatException e) {
-    			return false;
-    		}
-    	} else return false;
-    	return true;
-    }
     
-    public boolean validateName(String name) {
-    	// TODO: your work
+    /**
+     * The method checks whether the phone number is valid or not
+     * @param phoneNumber: so dien thoai ma nguoi dung nhap vao
+     * @return true: phone number is valid
+     * @return false: phone number is not valid
+     */
+    public boolean validatePhoneNumber(String phoneNumber) {
+    	if(phoneNumber != null) {
+    		
+    		if(phoneNumber.length() == 10) {
+    			if(phoneNumber.indexOf('0') != 0) return false;
+    			try{
+    				Integer.parseInt(phoneNumber);
+    			} catch (NumberFormatException e) {
+    				return false;
+    			}
+    		} else if(phoneNumber.length() == 11) {
+    			if(phoneNumber.indexOf('0') != 0 && phoneNumber.indexOf('1') != 1) return false;
+    			try{
+    				Integer.parseInt(phoneNumber);
+    			} catch (NumberFormatException e) {
+    				return false;
+    			}
+    		} else return false;
+    		
+    	} else return false;
     	
     	return true;
     }
     
+    /**
+     * The method checks whether the name customers provided is valid or not
+     * @param name: ten ma khach hang nhap vao
+     * @return true : thong tin ten hop le
+     * @return false: thong tin ten khong hop le
+     */
+    public boolean validateName(String name) {
+    	String[] pattArray = {"^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠ"
+    			+ "ẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ ]+$"};
+    	Pattern pattern;
+    	boolean result = true;
+    	
+    	if(name != null) {
+    		
+    		for(int i = 0; i < pattArray.length; i++) {
+    			pattern = Pattern.compile(pattArray[i]);
+    			result = pattern.matcher(name).matches();
+    			if(!result) {
+    				break;
+    			}
+    		}
+    	} else result = false;
+    	
+    	return result;
+    }
+    
+    
+    
+    /**
+     * The method checks whether the address customers provided is valid or not
+     * @param address: dia chi ma khach hang nhap
+     * @return true: thong tin dia chi hop le
+     * @return false: thong tin dia chi khong hop le
+     */
     public boolean validateAddress(String address) {
     	// TODO: your work
     	return false;
