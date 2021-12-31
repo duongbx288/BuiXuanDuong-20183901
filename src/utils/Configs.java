@@ -16,12 +16,12 @@ public class Configs {
 
 	// demo data
 	public static final String POST_DATA = "{"
-			+ " \"secretKey\": \"BUXj/7/gHHI=\" ,"
+			+ " \"secretKey\": \"BcNg5CGNOaY=\" ,"
 			+ " \"transaction\": {"
 			+ " \"command\": \"pay\" ,"
-			+ " \"cardCode\": \"118609_group1_2020\" ,"
-			+ " \"owner\": \"Group 1\" ,"
-			+ " \"cvvCode\": \"185\" ,"
+			+ " \"cardCode\": \"kscq2_group21_2021\" ,"
+			+ " \"owner\": \"Group 21\" ,"
+			+ " \"cvvCode\": \"817\" ,"
 			+ " \"dateExpried\": \"1125\" ,"
 			+ " \"transactionContent\": \"Pei debt\" ,"
 			+ " \"amount\": 50000 "
