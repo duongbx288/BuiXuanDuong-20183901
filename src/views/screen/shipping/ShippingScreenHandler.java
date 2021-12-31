@@ -90,7 +90,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 				throw new InvalidDeliveryInfoException("Province does not support Rush Order");
 			} else {
 
-			int shippingFees = getBController().calculateShippingFee(order);
+			int shippingFees = getBController().calculateShippingFee(order.getAmount());
 			order.setShippingFees(shippingFees);
 			order.setDeliveryInfo(messages);
 			order.setOrderType(true);
@@ -106,7 +106,7 @@ public class ShippingScreenHandler extends BaseScreenHandler implements Initiali
 			
 		else {
 			// calculate shipping fees
-			int shippingFees = getBController().calculateShippingFee(order);
+			int shippingFees = getBController().calculateShippingFee(order.getAmount());
 			order.setShippingFees(shippingFees);
 			order.setDeliveryInfo(messages);
 			order.setOrderType(false);

@@ -8,10 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class validateProvinceTest {
-	private PlaceRushOrderController placeRushOrderController;
+	private ValidateController placeRushOrderController;
 	@BeforeEach
 	void setUp() throws Exception {
-		placeRushOrderController = new PlaceRushOrderController();
+		placeRushOrderController = new ValidateController();
 	}
 
 	@ParameterizedTest
